@@ -124,15 +124,6 @@ static bool assign_coverage_from_json( const JsonObject &jo, const std::string &
     }
 }
 
-// Helper to safely look up and store iuse actions.
-static void emplace_usage( std::map<std::string, use_function> &container, std::string iuse_id )
-{
-    use_function fun = usage_from_string( iuse_id );
-    if( fun ) {
-        container.emplace( iuse_id, fun );
-    }
-}
-
 void Item_factory::finalize_pre( itype &obj )
 {
     // TODO: separate repairing from reinforcing/enhancement
@@ -2851,6 +2842,15 @@ void Item_factory::set_use_methods_from_json( const JsonObject &jo, const std::s
             jo.throw_error( "member 'use_action' is neither string nor object." );
         }
 
+    }
+}
+
+// Helper to safely look up and store iuse actions.
+void Item_factory::emplace_usage( std::map<std::string, use_function> &container, std::string iuse_id )
+{
+    use_function fun = usage_from_string( iuse_id );
+    if( fun ) {
+        container.emplace( iuse_id, fun );
     }
 }
 
